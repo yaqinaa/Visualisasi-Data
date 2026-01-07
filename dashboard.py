@@ -29,6 +29,30 @@ st.set_page_config(
     layout="wide"
 )
 
+
+def responsive_plotly(fig, min_w=420, max_w=650):
+    fig.update_layout(
+        autosize=True,
+        bargap=0.3,
+        margin=dict(l=80, r=20, t=30, b=20)
+    )
+
+    # CSS trick supaya responsive tapi ada batas
+    st.markdown(
+        f"""
+        <style>
+        div[data-testid="stPlotlyChart"] > div {{
+            max-width: {max_w}px;
+            min-width: {min_w}px;
+            margin: auto;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.plotly_chart(fig)
+
 #membuat 2 kolom untuk dahsboard
 # continuer = st.container(border=True, horizontal="Center")
 cols = st.columns([1, 1])  
@@ -63,7 +87,7 @@ with cols[0]:
             margin=dict(l=20, r=20, t=30, b=20)
         )
 
-        st.plotly_chart(fig_bar, use_container_width=True)
+        responsive_plotly(fig_bar)
 
 
 
@@ -96,4 +120,4 @@ with cols[1]:
             margin=dict(l=20, r=20, t=30, b=20)
         )
 
-        st.plotly_chart(fig_bar1, use_container_width=True)
+        responsive_plotly(fig_bar1)
